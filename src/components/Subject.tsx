@@ -1,16 +1,13 @@
 import React, { useRef, useState } from "react";
-import { selectSubject, useStore } from "../store/store"; // Adjust the path to your zustand store
+import { selectSubject, useStore } from "../store/store";
 import { NavigateButton } from "./NavigateButton";
 import { useNavigation } from "../hooks/useNavigation";
-import { usePersist } from "../hooks/usePersist";
 
 const PageD: React.FC = () => {
   const initialData = useStore(selectSubject);
   const originalData = useRef(initialData);
-  const updateData = useStore((state) => state.updateData); // Replace `updateData` with your zustand action
-  const updateBranchData = useStore((state) => state.updateBranchData);
+  const updateData = useStore((state) => state.updateData);
   const [localData, setLocalData] = useState<string>(initialData);
-  const { persist } = usePersist();
   const { goBack, goNext } = useNavigation({
     localData: { subject: localData },
     originalData: { subject: originalData.current },
@@ -19,7 +16,7 @@ const PageD: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (localData) {
-      updateData({ subject: localData }); // Dispatch data to zustand store
+      updateData({ subject: localData });
       goNext();
     }
   };

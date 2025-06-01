@@ -1,16 +1,13 @@
 import React, { useRef, useState } from "react";
-import { selectSkill, useStore } from "../store/store"; // Adjust the path to your zustand store
+import { selectSkill, useStore } from "../store/store";
 import { NavigateButton } from "./NavigateButton";
 import { useNavigation } from "../hooks/useNavigation";
-import { usePersist } from "../hooks/usePersist";
 
 const PageE: React.FC = () => {
   const initialData = useStore(selectSkill);
   const originalData = useRef(initialData);
-  const updateData = useStore((state) => state.updateData); // Replace `updateData` with your zustand action
-  const updateBranchData = useStore((state) => state.updateBranchData);
+  const updateData = useStore((state) => state.updateData);
   const [localData, setLocalData] = useState<string>(initialData);
-  const { persist } = usePersist();
   const { goBack, goNext } = useNavigation({
     localData: { skill: localData },
     originalData: { skill: originalData.current },
@@ -19,7 +16,7 @@ const PageE: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (localData) {
-      updateData({ skill: localData }); // Dispatch data to zustand store
+      updateData({ skill: localData });
       goNext();
     }
   };
