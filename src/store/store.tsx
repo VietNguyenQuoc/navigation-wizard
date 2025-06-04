@@ -13,7 +13,6 @@ export interface FormData {
 }
 interface StoreState extends RouteStoreState {
   data: FormData;
-  previousData?: FormData;
   snapshot?: FormData;
   updateData: (newData: Partial<FormData>) => void;
   updateBranchData: (newData: Partial<FormData>) => void;
@@ -46,13 +45,12 @@ export const useStore = create<StoreState>((set) => ({
   data: { ...initialFormData },
   updateData: (newData) =>
     set((state) => ({
-      previousData: state.data,
       data: { ...state.data, ...newData },
     })),
   updateBranchData(newData) {
     updateBranchData2(newData);
   },
-  saveSnapshot: () => set((state) => ({ snapshot: state.previousData })),
+  saveSnapshot: () => set((state) => ({ snapshot: state.data })),
   applySnapshot: () =>
     set((state) => ({ data: state.snapshot, snapshot: undefined })),
   // Route store

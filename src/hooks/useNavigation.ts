@@ -88,8 +88,6 @@ export const useNavigation = ({
       .filter(Boolean) as Route[];
 
     if (resurfaceRoutes.length) {
-      setBranchNode(currentPath);
-      saveSnapshot();
       setBranches(resurfaceRoutes);
       onBranching();
       navigate(resurfaceRoutes[0]);
@@ -117,22 +115,28 @@ export const useNavigation = ({
 
   const goBack = () => {
     // Reset branches if we are back to the branch node
-    if (branches.length && branchNode === getCurrentRoute()) {
+    if (branches.length && getCurrentRoute() === branches[0]) {
       setBranches([]);
+    }
+
+    if (getCurrentRoute() === branchNode) {
       applySnapshot();
     }
 
     navigate(-1);
   };
 
-  const goPage = (page: string, isEdit = false) => {
-    const route = routes.find((route) => route.path === page);
-    if (route) {
-      navigate(route.path);
+  const goPage = (route: Route, isEdit = false) => {
+    setBranchNode(route);
+    saveSnapshot();
+
+    const routeObj = routes.find((r) => r.path === route);
+    if (routeObj) {
+      navigate(routeObj.path);
       setBranches([]);
       setIsEdit(isEdit);
     } else {
-      console.error(`Route ${page} not found`);
+      console.error(`Route ${route} not found`);
     }
   };
 

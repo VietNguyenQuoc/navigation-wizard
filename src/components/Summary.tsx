@@ -1,4 +1,3 @@
-// import { Route } from "../routes";
 import { useNavigation } from "../hooks/useNavigation";
 import { useStore } from "../store/store";
 
